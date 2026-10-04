@@ -1,0 +1,93 @@
+package proyecto;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class Pantalla1Principal extends JPanel {
+
+    private final Color COLOR_FONDO = new Color(24, 48, 48);
+    private final Color COLOR_BOTON = new Color(74, 150, 138);
+    private final Color COLOR_TEXTO = Color.WHITE;
+
+    public Pantalla1Principal(ActionListener accionRevision, ActionListener accionArchivos, ActionListener accionOtros) {
+        setLayout(new BorderLayout());
+        setBackground(COLOR_FONDO);
+
+        // Encabezado
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setBackground(COLOR_FONDO);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
+
+        JLabel titleLabel = new JLabel("Sano Móvil");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+        titleLabel.setForeground(COLOR_TEXTO);
+
+        JPanel navPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
+        navPanel.setBackground(COLOR_FONDO);
+
+        JLabel tabPrincipal = new JLabel("Principal");
+        tabPrincipal.setFont(new Font("SansSerif", Font.BOLD, 14));
+        tabPrincipal.setForeground(COLOR_TEXTO);
+
+        JLabel tabAyuda = new JLabel("Ayuda");
+        tabAyuda.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        tabAyuda.setForeground(Color.LIGHT_GRAY);
+
+        JLabel tabConfig = new JLabel("Configuración");
+        tabConfig.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        tabConfig.setForeground(Color.LIGHT_GRAY);
+
+        navPanel.add(tabPrincipal);
+        navPanel.add(tabAyuda);
+        navPanel.add(tabConfig);
+
+        topPanel.add(titleLabel);
+        topPanel.add(navPanel);
+
+        // Botones principales
+        JPanel mainPanel = new JPanel(new GridLayout(5, 1, 0, 12));
+        mainPanel.setBackground(COLOR_FONDO);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+
+        JLabel subTitle = new JLabel("Su Salud en Movimiento", SwingConstants.CENTER);
+        subTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
+        subTitle.setForeground(COLOR_TEXTO);
+
+        JLabel descText = new JLabel("Tome el control de su bienestar hoy.", SwingConstants.CENTER);
+        descText.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        descText.setForeground(Color.LIGHT_GRAY);
+
+        JPanel headerTextPanel = new JPanel(new GridLayout(2, 1));
+        headerTextPanel.setBackground(COLOR_FONDO);
+        headerTextPanel.add(subTitle);
+        headerTextPanel.add(descText);
+
+        JButton btnRevision = crearBoton("Revisión del dispositivo");
+        JButton btnArchivos = crearBoton("Archivos");
+        JButton btnOtros = crearBoton("Otros");
+
+        // Conectar eventos a las acciones externas
+        btnRevision.addActionListener(accionRevision);
+        btnArchivos.addActionListener(accionArchivos);
+        btnOtros.addActionListener(accionOtros);
+
+        mainPanel.add(headerTextPanel);
+        mainPanel.add(btnRevision);
+        mainPanel.add(btnArchivos);
+        mainPanel.add(btnOtros);
+
+        add(topPanel, BorderLayout.NORTH);
+        add(mainPanel, BorderLayout.CENTER);
+    }
+
+    private JButton crearBoton(String texto) {
+        JButton btn = new JButton(texto);
+        btn.setFont(new Font("SansSerif", Font.BOLD, 16));
+        btn.setBackground(COLOR_BOTON);
+        btn.setForeground(COLOR_TEXTO);
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        return btn;
+    }
+}
