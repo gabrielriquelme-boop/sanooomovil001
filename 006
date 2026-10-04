@@ -1,0 +1,83 @@
+package proyecto;
+import javax.swing.*;
+
+import java.awt.*;
+
+public class SanoMovilGUI3 extends JFrame {
+
+    private CardLayout cardLayout;
+    private JPanel mainContainer;
+
+    private Pantalla1Principal pantalla1;
+    private Pantalla2Carga pantalla2;
+    private Pantalla3Archivos pantalla3;
+    private Pantalla4Otros pantalla4;
+
+    private Timer timerAnalisis;
+    private int tiempoRestanteSegundos = 120;
+
+    public SanoMovilGUI3() {
+        setTitle("Sano Móvil");
+        setSize(360, 640);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        cardLayout = new CardLayout();
+        mainContainer = new JPanel(cardLayout);
+
+        // Instanciar cada pantalla con sus acciones de navegación
+        pantalla1 = new Pantalla1Principal(
+            e -> iniciarAnalisis(),
+            e -> cardLayout.show(mainContainer, "ARCHIVOS"),
+            e -> cardLayout.show(mainContainer, "OTROS")
+        );
+
+        pantalla2 = new Pantalla2Carga();
+        pantalla3 = new Pantalla3Archivos(e -> cardLayout.show(mainContainer, "PRINCIPAL"));
+        pantalla4 = new Pantalla4Otros(e -> cardLayout.show(mainContainer, "PRINCIPAL"));
+
+        // Registrar las pantallas en el contenedor
+        mainContainer.add(pantalla1, "PRINCIPAL");
+        mainContainer.add(pantalla2, "CARGA");
+        mainContainer.add(pantalla3, "ARCHIVOS");
+        mainContainer.add(pantalla4, "OTROS");
+
+        add(mainContainer);
+        cardLayout.show(mainContainer, "PRINCIPAL");
+    }
+
+    private void iniciarAnalisis() {
+        tiempoRestanteSegundos = 120;
+        pantalla2.actualizarTiempo(tiempoRestanteSegundos);
+
+        cardLayout.show(mainContainer, "CARGA");
+        pantalla2.iniciarAnimacion();
+
+        timerAnalisis = new Timer(1000, e -> {
+            tiempoRestanteSegundos--;
+            pantalla2.actualizarTiempo(tiempoRestanteSegundos);
+
+            if (tiempoRestanteSegundos <= 0) {
+                timerAnalisis.stop();
+                pantalla2.detenerAnimacion();
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    "¡Análisis finalizado con éxito!",
+                    "Completado",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+
+                cardLayout.show(mainContainer, "PRINCIPAL");
+            }
+        });
+
+        timerAnalisis.start();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new SanoMovilGUI3().setVisible(true);
+        });
+    }
+}
