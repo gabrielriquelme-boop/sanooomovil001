@@ -1,0 +1,62 @@
+package proyecto;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class Pantalla4Otros extends JPanel {
+
+    private final Color COLOR_FONDO = new Color(24, 48, 48);
+    private final Color COLOR_BOTON = new Color(74, 150, 138);
+    private final Color COLOR_TEXTO = Color.WHITE;
+
+    public Pantalla4Otros(ActionListener accionVolver) {
+        setLayout(new BorderLayout());
+        setBackground(COLOR_FONDO);
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel lblTitulo = new JLabel("Opciones Adicionales", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 20));
+        lblTitulo.setForeground(COLOR_TEXTO);
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+
+        // Panel con bloques verticales
+        JPanel bloquesPanel = new JPanel(new GridLayout(2, 1, 0, 15));
+        bloquesPanel.setBackground(COLOR_FONDO);
+
+        JButton btnAyuda = crearBloque("Ayuda", "Preguntas frecuentes y soporte técnico");
+        JButton btnContacto = crearBloque("Contacto Programado", "Agendar asistencia o llamadas");
+
+        btnAyuda.addActionListener(e -> 
+            JOptionPane.showMessageDialog(this, "Abriendo el centro de Ayuda...")
+        );
+
+        btnContacto.addActionListener(e -> 
+            JOptionPane.showMessageDialog(this, "Abriendo Contacto Programado...")
+        );
+
+        bloquesPanel.add(btnAyuda);
+        bloquesPanel.add(btnContacto);
+
+        // Botón para regresar al menú
+        JButton btnVolver = new JButton("← Volver al Inicio");
+        btnVolver.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btnVolver.setBackground(COLOR_FONDO);
+        btnVolver.setForeground(Color.LIGHT_GRAY);
+        btnVolver.setFocusPainted(false);
+        btnVolver.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+        btnVolver.addActionListener(accionVolver);
+
+        add(lblTitulo, BorderLayout.NORTH);
+        add(bloquesPanel, BorderLayout.CENTER);
+        add(btnVolver, BorderLayout.SOUTH);
+    }
+
+    private JButton crearBloque(String titulo, String subtitulo) {
+        JButton btn = new JButton("<html><center><b>" + titulo + "</b><br><font size='3' color='#E0E0E0'>" + subtitulo + "</font></center></html>");
+        btn.setFont(new Font("SansSerif", Font.BOLD, 16));
+        btn.setBackground(COLOR_BOTON);
+        btn.setForeground(COLOR_TEXTO);
+        btn.setFocusPainted(false);
+        return btn;
+    }
+}
