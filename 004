@@ -1,0 +1,57 @@
+package proyecto;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class Pantalla3Archivos extends JPanel {
+
+    private final Color COLOR_FONDO = new Color(24, 48, 48);
+    private final Color COLOR_BOTON = new Color(74, 150, 138);
+    private final Color COLOR_TEXTO = Color.WHITE;
+
+    public Pantalla3Archivos(ActionListener accionVolver) {
+        setLayout(new BorderLayout());
+        setBackground(COLOR_FONDO);
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Título
+        JLabel lblTitulo = new JLabel("Archivos del Dispositivo", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 20));
+        lblTitulo.setForeground(COLOR_TEXTO);
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+
+        // Cuadrícula tipo tabla/chocolate (2 columnas, espacio entre celdas)
+        JPanel gridPanel = new JPanel(new GridLayout(2, 2, 12, 12));
+        gridPanel.setBackground(COLOR_FONDO);
+
+        gridPanel.add(crearTarjeta("Imágenes"));
+        gridPanel.add(crearTarjeta("Vídeos"));
+        gridPanel.add(crearTarjeta("Aplicaciones"));
+        gridPanel.add(crearTarjeta("Accesos"));
+
+        // Botón para regresar al menú
+        JButton btnVolver = new JButton("← Volver al Inicio");
+        btnVolver.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btnVolver.setBackground(COLOR_FONDO);
+        btnVolver.setForeground(Color.LIGHT_GRAY);
+        btnVolver.setFocusPainted(false);
+        btnVolver.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+        btnVolver.addActionListener(accionVolver);
+
+        add(lblTitulo, BorderLayout.NORTH);
+        add(gridPanel, BorderLayout.CENTER);
+        add(btnVolver, BorderLayout.SOUTH);
+    }
+
+    private JButton crearTarjeta(String nombre) {
+        JButton btn = new JButton(nombre);
+        btn.setFont(new Font("SansSerif", Font.BOLD, 16));
+        btn.setBackground(COLOR_BOTON);
+        btn.setForeground(COLOR_TEXTO);
+        btn.setFocusPainted(false);
+        btn.addActionListener(e -> 
+            JOptionPane.showMessageDialog(this, "Sección seleccionada: " + nombre)
+        );
+        return btn;
+    }
+}
