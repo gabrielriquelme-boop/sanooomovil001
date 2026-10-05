@@ -1,0 +1,114 @@
+package proyecto2;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class Pantalla3ArchivosPermisos extends JPanel {
+
+    private final Color COLOR_FONDO = new Color(24, 48, 48);
+    private final Color COLOR_BOTON = new Color(74, 150, 138);
+    private final Color COLOR_TEXTO = Color.WHITE;
+
+    public Pantalla3ArchivosPermisos(ActionListener accionVolver) {
+        setLayout(new BorderLayout());
+        setBackground(COLOR_FONDO);
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel lblTitulo = new JLabel("Archivos y Permisos", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 18));
+        lblTitulo.setForeground(COLOR_TEXTO);
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+
+        // Cuadrícula de 2 columnas
+        JPanel gridPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        gridPanel.setBackground(COLOR_FONDO);
+
+        JButton btnImagenes = crearTarjeta("Imágenes");
+        JButton btnVideos = crearTarjeta("Vídeos");
+        JButton btnAplicaciones = crearTarjeta("Aplicaciones");
+        JButton btnAccesos = crearTarjeta("Accesos");
+
+        // Botón destacado de Semáforo de Permisos
+        JButton btnPermisos = new JButton("Semáforo de Permisos");
+        btnPermisos.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btnPermisos.setBackground(new Color(210, 140, 50)); // Naranja / Alerta
+        btnPermisos.setForeground(COLOR_TEXTO);
+        btnPermisos.setFocusPainted(false);
+
+        btnImagenes.addActionListener(e -> JOptionPane.showMessageDialog(this, "Sección: Imágenes"));
+        btnVideos.addActionListener(e -> JOptionPane.showMessageDialog(this, "Sección: Vídeos"));
+        btnAplicaciones.addActionListener(e -> JOptionPane.showMessageDialog(this, "Sección: Aplicaciones"));
+        btnAccesos.addActionListener(e -> JOptionPane.showMessageDialog(this, "Sección: Accesos"));
+
+        // Al hacer clic en Permisos desplegar opciones
+        btnPermisos.addActionListener(e -> desplegarMenuPermisos());
+
+        gridPanel.add(btnImagenes);
+        gridPanel.add(btnVideos);
+        gridPanel.add(btnAplicaciones);
+        gridPanel.add(btnAccesos);
+        gridPanel.add(btnPermisos);
+
+        JButton btnVolver = new JButton("← Volver al Inicio");
+        btnVolver.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btnVolver.setBackground(COLOR_FONDO);
+        btnVolver.setForeground(Color.LIGHT_GRAY);
+        btnVolver.setFocusPainted(false);
+        btnVolver.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+        btnVolver.addActionListener(accionVolver);
+
+        add(lblTitulo, BorderLayout.NORTH);
+        add(gridPanel, BorderLayout.CENTER);
+        add(btnVolver, BorderLayout.SOUTH);
+    }
+
+    // Despliegue de permisos
+    private void desplegarMenuPermisos() {
+        String[] opciones = {"Micrófono", "Cámaras", "Ubicación y Notificaciones"};
+        String seleccion = (String) JOptionPane.showInputDialog(
+            this,
+            "Seleccione un permiso para ver qué aplicaciones lo utilizan:",
+            "Semáforo de Permisos",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[0]
+        );
+
+        if (seleccion != null) {
+            mostrarAppsPorPermiso(seleccion);
+        }
+    }
+
+    // Muestra las aplicaciones asociadas al permiso seleccionado
+    private void mostrarAppsPorPermiso(String permiso) {
+        String apps = "";
+        switch (permiso) {
+            case "Micrófono":
+                apps = "• WhatsApp\n• Instagram\n• Chrome\n• Grabadora de Voz";
+                break;
+            case "Cámaras":
+                apps = "• Cámara Nativa\n• WhatsApp\n• Instagram\n• TikTok";
+                break;
+            case "Ubicación y Notificaciones":
+                apps = "• Google Maps\n• Chrome\n• Uber\n• WhatsApp";
+                break;
+        }
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Aplicaciones con acceso activo a [" + permiso + "]:\n\n" + apps,
+            "Detalle de Permiso: " + permiso,
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    private JButton crearTarjeta(String nombre) {
+        JButton btn = new JButton(nombre);
+        btn.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btn.setBackground(COLOR_BOTON);
+        btn.setForeground(COLOR_TEXTO);
+        btn.setFocusPainted(false);
+        return btn;
+    }
+}
