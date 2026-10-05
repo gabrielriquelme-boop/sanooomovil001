@@ -1,0 +1,68 @@
+package proyecto2;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class Pantalla2Diagnostico extends JPanel {
+
+    private final Color COLOR_FONDO = new Color(24, 48, 48);
+    private final Color COLOR_BOTON = new Color(74, 150, 138);
+    private final Color COLOR_TEXTO = Color.WHITE;
+
+    public Pantalla2Diagnostico(ActionListener accionRevision, ActionListener accionVolver) {
+        setLayout(new BorderLayout());
+        setBackground(COLOR_FONDO);
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel lblTitulo = new JLabel("Centro de Diagnóstico Visual", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 18));
+        lblTitulo.setForeground(COLOR_TEXTO);
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+
+        JPanel gridPanel = new JPanel(new GridLayout(4, 1, 0, 10));
+        gridPanel.setBackground(COLOR_FONDO);
+
+        JButton btnRevision = crearBoton("Revisión del dispositivo (Escaneo)");
+        JButton btnBateria = crearBoton("Salud de Batería y Energía");
+        JButton btnEspacio = crearBoton("Espacio y Almacenamiento");
+        JButton btnTriage = crearBoton("Triage de Síntomas (?¿Se calienta?)");
+
+        btnRevision.addActionListener(accionRevision);
+
+        btnBateria.addActionListener(e -> 
+            JOptionPane.showMessageDialog(this, "Batería en buen estado. Estimación: 14 hrs de uso real.")
+        );
+        btnEspacio.addActionListener(e -> 
+            JOptionPane.showMessageDialog(this, "Espacio disponible traducido: ~4,500 fotos o 1,200 canciones.")
+        );
+        btnTriage.addActionListener(e -> 
+            JOptionPane.showMessageDialog(this, "Asistente de Preguntas: ¿Su dispositivo se calienta o la carga dura poco?")
+        );
+
+        gridPanel.add(btnRevision);
+        gridPanel.add(btnBateria);
+        gridPanel.add(btnEspacio);
+        gridPanel.add(btnTriage);
+
+        JButton btnVolver = new JButton("← Volver al Inicio");
+        btnVolver.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btnVolver.setBackground(COLOR_FONDO);
+        btnVolver.setForeground(Color.LIGHT_GRAY);
+        btnVolver.setFocusPainted(false);
+        btnVolver.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+        btnVolver.addActionListener(accionVolver);
+
+        add(lblTitulo, BorderLayout.NORTH);
+        add(gridPanel, BorderLayout.CENTER);
+        add(btnVolver, BorderLayout.SOUTH);
+    }
+
+    private JButton crearBoton(String texto) {
+        JButton btn = new JButton(texto);
+        btn.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btn.setBackground(COLOR_BOTON);
+        btn.setForeground(COLOR_TEXTO);
+        btn.setFocusPainted(false);
+        return btn;
+    }
+}
