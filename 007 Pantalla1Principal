@@ -1,0 +1,75 @@
+package proyecto2;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class Pantalla1Principal extends JPanel {
+
+    private final Color COLOR_FONDO = new Color(24, 48, 48);
+    private final Color COLOR_BOTON = new Color(74, 150, 138);
+    private final Color COLOR_TEXTO = Color.WHITE;
+
+    public Pantalla1Principal(ActionListener accionCuidar, ActionListener accionArchivosPermisos, ActionListener accionGuiaAyuda) {
+        setLayout(new BorderLayout());
+        setBackground(COLOR_FONDO);
+
+        // Header Superior
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setBackground(COLOR_FONDO);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
+
+        JLabel titleLabel = new JLabel("Sano Móvil");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+        titleLabel.setForeground(COLOR_TEXTO);
+
+        // Vista general de dispositivos & Score
+        JLabel lblDispositivos = new JLabel("Dispositivos: Smartphone, Tablet", SwingConstants.LEFT);
+        lblDispositivos.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        lblDispositivos.setForeground(Color.LIGHT_GRAY);
+
+        JLabel lblScore = new JLabel("Score de Salud Digital: 85 / 100", SwingConstants.LEFT);
+        lblScore.setFont(new Font("SansSerif", Font.BOLD, 14));
+        lblScore.setForeground(new Color(120, 220, 160)); // Verde brillante
+
+        topPanel.add(titleLabel);
+        topPanel.add(Box.createVerticalStrut(5));
+        topPanel.add(lblDispositivos);
+        topPanel.add(lblScore);
+
+        // Panel Central con Botones Principales
+        JPanel mainPanel = new JPanel(new GridLayout(4, 1, 0, 15));
+        mainPanel.setBackground(COLOR_FONDO);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 20, 20));
+
+        JLabel subTitle = new JLabel("Mi Ecosistema", SwingConstants.CENTER);
+        subTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
+        subTitle.setForeground(COLOR_TEXTO);
+
+        JButton btnCuidar = crearBoton("Cuidar mi equipo hoy");
+        JButton btnArchivosPermisos = crearBoton("Archivos y Permisos");
+        JButton btnGuiaAyuda = crearBoton("Guía y Ayuda");
+
+        btnCuidar.addActionListener(accionCuidar);
+        btnArchivosPermisos.addActionListener(accionArchivosPermisos);
+        btnGuiaAyuda.addActionListener(accionGuiaAyuda);
+
+        mainPanel.add(subTitle);
+        mainPanel.add(btnCuidar);
+        mainPanel.add(btnArchivosPermisos);
+        mainPanel.add(btnGuiaAyuda);
+
+        add(topPanel, BorderLayout.NORTH);
+        add(mainPanel, BorderLayout.CENTER);
+    }
+
+    private JButton crearBoton(String texto) {
+        JButton btn = new JButton(texto);
+        btn.setFont(new Font("SansSerif", Font.BOLD, 15));
+        btn.setBackground(COLOR_BOTON);
+        btn.setForeground(COLOR_TEXTO);
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createEmptyBorder(12, 10, 12, 10));
+        return btn;
+    }
+}
