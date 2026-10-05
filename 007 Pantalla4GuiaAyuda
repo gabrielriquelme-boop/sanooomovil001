@@ -1,0 +1,58 @@
+package proyecto2;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class Pantalla4GuiaAyuda extends JPanel {
+
+    private final Color COLOR_FONDO = new Color(24, 48, 48);
+    private final Color COLOR_BOTON = new Color(74, 150, 138);
+    private final Color COLOR_TEXTO = Color.WHITE;
+
+    public Pantalla4GuiaAyuda(ActionListener accionVolver) {
+        setLayout(new BorderLayout());
+        setBackground(COLOR_FONDO);
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel lblTitulo = new JLabel("Recetas y Guías Paso a Paso", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 18));
+        lblTitulo.setForeground(COLOR_TEXTO);
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+
+        JPanel bloquesPanel = new JPanel(new GridLayout(3, 1, 0, 12));
+        bloquesPanel.setBackground(COLOR_FONDO);
+
+        JButton btnTutoriales = crearBloque("Tutoriales Interactivos", "Resolver problemas de configuración en vivo");
+        JButton btnAlertas = crearBloque("Alertas Preventivas", "Riesgos frecuentes según el modelo de tu equipo");
+        JButton btnSoporte = crearBloque("Soporte Técnico / Ayuda", "Contactar con un especialista");
+
+        btnTutoriales.addActionListener(e -> JOptionPane.showMessageDialog(this, "Abriendo Tutoriales Interactivos..."));
+        btnAlertas.addActionListener(e -> JOptionPane.showMessageDialog(this, "Alertas: Tu dispositivo no presenta riesgos de firmware."));
+        btnSoporte.addActionListener(e -> JOptionPane.showMessageDialog(this, "Contacto con soporte técnico programado."));
+
+        bloquesPanel.add(btnTutoriales);
+        bloquesPanel.add(btnAlertas);
+        bloquesPanel.add(btnSoporte);
+
+        JButton btnVolver = new JButton("← Volver al Inicio");
+        btnVolver.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btnVolver.setBackground(COLOR_FONDO);
+        btnVolver.setForeground(Color.LIGHT_GRAY);
+        btnVolver.setFocusPainted(false);
+        btnVolver.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+        btnVolver.addActionListener(accionVolver);
+
+        add(lblTitulo, BorderLayout.NORTH);
+        add(bloquesPanel, BorderLayout.CENTER);
+        add(btnVolver, BorderLayout.SOUTH);
+    }
+
+    private JButton crearBloque(String titulo, String subtitulo) {
+        JButton btn = new JButton("<html><center><b>" + titulo + "</b><br><font size='2' color='#E0E0E0'>" + subtitulo + "</font></center></html>");
+        btn.setFont(new Font("SansSerif", Font.BOLD, 15));
+        btn.setBackground(COLOR_BOTON);
+        btn.setForeground(COLOR_TEXTO);
+        btn.setFocusPainted(false);
+        return btn;
+    }
+}
