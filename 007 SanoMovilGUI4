@@ -1,0 +1,106 @@
+package proyecto2;
+import javax.swing.*;
+import java.awt.*;
+
+public class SanoMovilGUI4 extends JFrame {
+
+    private CardLayout cardLayout;
+    private JPanel mainContainer;
+
+    private Pantalla1Principal pantalla1;
+    private Pantalla2Diagnostico pantalla2;
+    private PantallaEscaneo pantallaEscaneo;
+    private Pantalla3ArchivosPermisos pantalla3;
+    private Pantalla4GuiaAyuda pantalla4;
+
+    private Timer timerAnalisis;
+    private int tiempoRestanteSegundos = 120;
+
+    public SanoMovilGUI4() {
+        setTitle("Sano Móvil");
+        setSize(360, 640);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        cardLayout = new CardLayout();
+        mainContainer = new JPanel(cardLayout);
+
+        // Instanciar pantallas con sus callbacks
+        pantalla1 = new Pantalla1Principal(
+            e -> cardLayout.show(mainContainer, "DIAGNOSTICO"),
+            e -> cardLayout.show(mainContainer, "ARCHIVOS_PERMISOS"),
+            e -> cardLayout.show(mainContainer, "GUIA_AYUDA")
+        );
+
+        pantalla2 = new Pantalla2Diagnostico(
+            e -> iniciarAnalisis(),
+            e -> cardLayout.show(mainContainer, "PRINCIPAL")
+        );
+
+        pantallaEscaneo = new PantallaEscaneo(e -> cancelarAnalisis());
+
+        pantalla3 = new Pantalla3ArchivosPermisos(e -> cardLayout.show(mainContainer, "PRINCIPAL"));
+        pantalla4 = new Pantalla4GuiaAyuda(e -> cardLayout.show(mainContainer, "PRINCIPAL"));
+
+        // Registrar en CardLayout
+        mainContainer.add(pantalla1, "PRINCIPAL");
+        mainContainer.add(pantalla2, "DIAGNOSTICO");
+        mainContainer.add(pantallaEscaneo, "ESCANEO");
+        mainContainer.add(pantalla3, "ARCHIVOS_PERMISOS");
+        mainContainer.add(pantalla4, "GUIA_AYUDA");
+
+        add(mainContainer);
+        cardLayout.show(mainContainer, "PRINCIPAL");
+    }
+
+    private void iniciarAnalisis() {
+        tiempoRestanteSegundos = 120;
+        pantallaEscaneo.actualizarTiempo(tiempoRestanteSegundos);
+
+        cardLayout.show(mainContainer, "ESCANEO");
+        pantallaEscaneo.iniciarAnimacion();
+
+        timerAnalisis = new Timer(1000, e -> {
+            tiempoRestanteSegundos--;
+            pantallaEscaneo.actualizarTiempo(tiempoRestanteSegundos);
+
+            if (tiempoRestanteSegundos <= 0) {
+                timerAnalisis.stop();
+                pantallaEscaneo.detenerAnimacion();
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    "¡Análisis finalizado con éxito!",
+                    "Completado",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+
+                cardLayout.show(mainContainer, "DIAGNOSTICO");
+            }
+        });
+
+        timerAnalisis.start();
+    }
+
+    private void cancelarAnalisis() {
+        if (timerAnalisis != null && timerAnalisis.isRunning()) {
+            timerAnalisis.stop();
+        }
+        pantallaEscaneo.detenerAnimacion();
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Escaneo cancelado por el usuario.",
+            "Operación Cancelada",
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        cardLayout.show(mainContainer, "DIAGNOSTICO");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new SanoMovilGUI4().setVisible(true);
+        });
+    }
+}
